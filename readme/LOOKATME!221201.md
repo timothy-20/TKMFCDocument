@@ -1,10 +1,8 @@
 # LOOT AT ME!
 
-> **date**: 22.12.01 <br>
+> **date**: 22.12.01 - <br>
 > **author**: timothy-20 <br>
 > **subject**: windows mfc programming 이해를 위한 학습 내용.
-
-[//]: # (### new와 delete keyword를 이용한 동적 메모리 할당)
 
 ### [Windows Procedures](https://learn.microsoft.com/en-us/windows/win32/winmsg/about-window-procedures)
 
@@ -31,7 +29,7 @@ Windows 기반 어플리케이션은 **이벤트 기반** 입니다.
 [직접 프로시저로 전달하는](https://learn.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues#nonqueued-messages) 식으로 수행합니다.
 
 #### 1. 대기 중인 메시지
-> <img src="public/221201/mfc-message-queue-flow.png"><br>
+> <img src="public/mfc-message-queue-flow.png"><br>
 > 1. 전술한 것처럼, 외부 입력(이벤트)을 메시지로 변환하여 시스템 메시지 큐에 넣습니다. 
 > 2. 
 
