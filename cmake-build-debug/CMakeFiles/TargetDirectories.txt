@@ -1,0 +1,3 @@
+D:/Windows MFC Projects/TKCppAlgorithm221130/cmake-build-debug/CMakeFiles/TKCppAlgorithm221130.dir
+D:/Windows MFC Projects/TKCppAlgorithm221130/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Windows MFC Projects/TKCppAlgorithm221130/cmake-build-debug/CMakeFiles/rebuild_cache.dir
