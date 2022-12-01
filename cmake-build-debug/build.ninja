@@ -49,17 +49,17 @@ cmake_ninja_workdir = D$:/Windows$ MFC$ Projects/TKCppAlgorithm221130/cmake-buil
 
 build cmake_object_order_depends_target_TKCppAlgorithm221130: phony || CMakeFiles/TKCppAlgorithm221130.dir
 
-build CMakeFiles/TKCppAlgorithm221130.dir/main.cpp.obj: CXX_COMPILER__TKCppAlgorithm221130_Debug D$:/Windows$ MFC$ Projects/TKCppAlgorithm221130/main.cpp || cmake_object_order_depends_target_TKCppAlgorithm221130
-  DEP_FILE = CMakeFiles\TKCppAlgorithm221130.dir\main.cpp.obj.d
+build CMakeFiles/TKCppAlgorithm221130.dir/src/main.cpp.obj: CXX_COMPILER__TKCppAlgorithm221130_Debug D$:/Windows$ MFC$ Projects/TKCppAlgorithm221130/src/main.cpp || cmake_object_order_depends_target_TKCppAlgorithm221130
+  DEP_FILE = CMakeFiles\TKCppAlgorithm221130.dir\src\main.cpp.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\TKCppAlgorithm221130.dir
-  OBJECT_FILE_DIR = CMakeFiles\TKCppAlgorithm221130.dir
+  OBJECT_FILE_DIR = CMakeFiles\TKCppAlgorithm221130.dir\src
 
-build CMakeFiles/TKCppAlgorithm221130.dir/TKInstance.cpp.obj: CXX_COMPILER__TKCppAlgorithm221130_Debug D$:/Windows$ MFC$ Projects/TKCppAlgorithm221130/TKInstance.cpp || cmake_object_order_depends_target_TKCppAlgorithm221130
-  DEP_FILE = CMakeFiles\TKCppAlgorithm221130.dir\TKInstance.cpp.obj.d
+build CMakeFiles/TKCppAlgorithm221130.dir/src/TKInstance.cpp.obj: CXX_COMPILER__TKCppAlgorithm221130_Debug D$:/Windows$ MFC$ Projects/TKCppAlgorithm221130/src/TKInstance.cpp || cmake_object_order_depends_target_TKCppAlgorithm221130
+  DEP_FILE = CMakeFiles\TKCppAlgorithm221130.dir\src\TKInstance.cpp.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\TKCppAlgorithm221130.dir
-  OBJECT_FILE_DIR = CMakeFiles\TKCppAlgorithm221130.dir
+  OBJECT_FILE_DIR = CMakeFiles\TKCppAlgorithm221130.dir\src
 
 
 # =============================================================================
@@ -69,7 +69,7 @@ build CMakeFiles/TKCppAlgorithm221130.dir/TKInstance.cpp.obj: CXX_COMPILER__TKCp
 #############################################
 # Link the executable TKCppAlgorithm221130.exe
 
-build TKCppAlgorithm221130.exe: CXX_EXECUTABLE_LINKER__TKCppAlgorithm221130_Debug CMakeFiles/TKCppAlgorithm221130.dir/main.cpp.obj CMakeFiles/TKCppAlgorithm221130.dir/TKInstance.cpp.obj
+build TKCppAlgorithm221130.exe: CXX_EXECUTABLE_LINKER__TKCppAlgorithm221130_Debug CMakeFiles/TKCppAlgorithm221130.dir/src/main.cpp.obj CMakeFiles/TKCppAlgorithm221130.dir/src/TKInstance.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\TKCppAlgorithm221130.dir

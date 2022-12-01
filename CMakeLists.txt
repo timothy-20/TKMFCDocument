@@ -3,4 +3,4 @@ project(TKCppAlgorithm221130)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(TKCppAlgorithm221130 main.cpp TKInstance.cpp TKInstance.h)
+add_executable(TKCppAlgorithm221130 src/main.cpp src/TKInstance.cpp src/TKInstance.h)
