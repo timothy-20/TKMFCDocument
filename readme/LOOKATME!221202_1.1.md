@@ -6,6 +6,124 @@
 
 #### ※ 해당 README는 문서는 실습 내용을 정리하고 있습니다.
 
-### [Untitled](https://namu.wiki/w/%ED%97%9D%EA%B0%80%EB%A6%AC%EC%95%88%20%ED%91%9C%EA%B8%B0%EB%B2%95)
+### [창 구현하기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/your-first-windows-program)
 
 ---
+
+> visual studio 설정에서 기존에 mfc 빌드를 위해 '**MFC 사용 설정**'을
+> '**공유 DLL에서 MFC 사용**'에서 '**표준 Windows 라이브러리 사용**' 으로 돌려 놓아야 합니다.
+
+```c++
+//main.h
+
+#ifndef UNICODE
+#define UNICODE
+#endif
+
+#include <windows.h>
+
+//WindowProc 함수는 개념에서 두드러졌던 창의 프로시저입니다.
+//창의 모양, 사용자와의 상호작용 방식 등의 동작을 정의합니다.
+//WNDCLASS 구조체에 함수 포인터 형태로 등록됩니다.
+//WindowProc 프로시저 함수의 매게변수에 대한 설명은 아래와 같습니다.
+//1. hWnd는 창에 대한 핸들입니다.
+//2. uMsg는 메시지 코드입니다. DispatchMessage 함수를 통해 전달된 MSG 구조체의 메시지 코드가 맞습니다.
+//3. wParam, lParam은 메시지와 관련된 추가 데이터입니다.
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) //CALLBACK은 함수에 대한 호출 규칙입니다.
+{
+	switch (uMsg)
+	{
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+
+	case WM_PAINT:
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hWnd, &ps);
+
+        //rcPaint 멤버는 paint update 관련 지역에 대한 값입니다.
+        //FillRect 함수의 3번째 매게변수에는 HBRUSH 변수를 통해 view에서 업데이트 될 색상을 지정합니다.
+		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+		EndPaint(hWnd, &ps);
+
+		return 0;
+	}
+
+	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+}
+
+//wWinMain 함수는 프로그램의 진입점입니다.
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
+{
+	const wchar_t CLASS_NAME[] = L"TKWindowClass001";
+    
+    //WNDCLASS 구조체는 창 클래스에 대한 구조체입니다. 여러 창의 공통적인 동작 집합을 정의합니다.
+    //창 클래스가 c++에서의 class 개념과 다르다는 사실을 유의해야 합니다.
+	WNDCLASS wc = {};
+
+	wc.lpfnWndProc = WindowProc; //창 프로시저 함수 포인터(콜백)입니다. 창 동작의 대부분을 정의합니다.
+	wc.hInstance = hInstance; //앱 인스턴스의 핸들입니다.
+	wc.lpszClassName = CLASS_NAME; //창을 식별하는 문자열입니다
+
+	RegisterClass(&wc); //운영체제에 창 클래스를 등록합니다.
+
+	HWND hWnd = CreateWindowEx(
+		0, //윈도우 스타일에 대해 선택적인 동작(ex. 투명 창)이 가능합니다. 기본 스타일은 0을 설정합니다.
+		CLASS_NAME, //창 클래스명입니다.
+		L"Learn windows programming", //창의 제목 표시줄에 들어갈 문자열입니다.
+		WS_OVERLAPPEDWINDOW,  //창의 모양을 정의하는 플래그 집합입니다. WS_OVERLAPPEDWINDOW는 모든 창의 일반적인 스타일이 전부 정의되어 있습니다.
+		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, //x, y, cx, cy, 위치 및 크기에 대한 정의입니다.
+		NULL, //소유자의 창입니다. 해당 창이 최상위에 있을 경우 NULL을 설정합니다.
+		NULL, //창의 메뉴를 정의합니다. NULL이면 설정되지 않습니다.
+		hInstance, //인스턴스 핸들입니다.
+		NULL //임의 데이터에 대한 포인터입니다. 프로시저(콜백)에 데이터 구조를 전달할 수 있습니다.
+	);
+
+	if (hWnd == NULL) 
+		return 0;
+
+    //새 창에 대한 핸들을 전달하여 화면에 표시합니다.
+    //nCmdShow 매게변수를 이용하여 창을 최소화하거나 최대화 할 수 있습니다.
+	ShowWindow(hWnd, nCmdShow);
+
+    //프로그램의 실행 흐름 가운데, 예측하기 어려운 이벤트(사용자, 운영체제)를 감지합니다.
+    // 아래의 메시지 구조체에 대상 창 및 메시지 코드(WM_LBUTTONDOWN, 마우스 좌클릭에 대한 코드)가 포함됩니다.
+	MSG msg = {};
+
+    //해당 루프는 올바른 창 프로시저로 메시지를 전달합니다.
+	while (GetMessage(&msg, NULL, 0, 0) > 0)
+	{
+		TranslateMessage(&msg); //사용자의 키보드 입력 이벤트를 감지합니다. 해당 함수는 DispatchMessage보다 먼저 발생해야 합니다.
+		DispatchMessage(&msg); //창의 프로시저(콜백)을 호출하도록 지시합니다. 이때 GetMessage 통해 받았던(msg 구조체에 담긴) 이벤트를 프로시저에 전달합니다.
+	}
+
+	return 0;
+}
+```
+
+소스 코드의 주석은 MDNS 문서의 '첫 번째 Windows 프로그램' 항목의 가이드를 정리했음을 알려드립니다.
+
+### [창 제거 흐름](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/closing-the-window)
+
+---
+
+<img src="public/window-close-flow.png">
+
+> 출처: **MSDN - 화면 및 창 좌표** 섹션에서 2번째 이미지 
+
+```c++
+case WM_CLOSE:
+    if (MessageBox(hWnd, L"Do you want quit?", L"Notice", MB_OKCANCEL) == IDOK)
+    {
+        OutputDebugString(L"Select OK.\n");
+        DestroyWindow(hWnd);
+    }
+    else
+    {
+        OutputDebugString(L"Select CANCLE.\n");
+    }
+			
+    return 0;
+```
+WM_CLOSE에 대한 상태를 감지하는 case는 위와 같습니다.
+사용자가 창을 닫는 이벤트를 발생할 시, 창을 파괴하기 이전에 호출됩니다. 이는 창 종료 여부를 묻는 모달을 발생시키에는 최적의 시점입니다.

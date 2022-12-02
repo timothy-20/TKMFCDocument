@@ -22,7 +22,7 @@ Windows programming에서 창의 개념은 포괄적입니다. 버튼, 편집 �
 
 ---
 
-<img src="public/window-parent-children-image.png"><br>
+<img src="public/window-parent-children-image.png">
 > 출처: [**MSDN - 부모 Windows 및 소유자 Windows** 섹션에서 2번째 이미지](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/what-is-a-window-#parent-windows-and-owner-windows)
 
 어플리케이션 창과 ui control 창의 관계에서도 알 수 있다시피, 이 둘은 창의 부모 자식 관계에 있습니다. 그리고 위의 이미지에서는 어플리케이션 창과 모달 창 간의 관계도 보이는데, 이를 **소유자 창**과 **소유 창**의 관계라고 합니다.
@@ -39,7 +39,7 @@ windows programming에서 매우 핵심적인 개념인 **HWND**가 이에 해�
 
 ---
 
-<img src="public/window-points-image.png"><br>
+<img src="public/window-points-image.png">
 > 출처: [**MSDN - 화면 및 창 좌표** 섹션에서 2번째 이미지](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/what-is-a-window-#parent-windows-and-owner-windows)
 
 해당 항목은 이전 openGL, ios 코드를 이용한 ui 구성 등의 개념에서 무척이나 친숙했습니다. 
