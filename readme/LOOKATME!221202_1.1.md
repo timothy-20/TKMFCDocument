@@ -127,3 +127,74 @@ case WM_CLOSE:
 ```
 WM_CLOSE에 대한 상태를 감지하는 case는 위와 같습니다.
 사용자가 창을 닫는 이벤트를 발생할 시, 창을 파괴하기 이전에 호출됩니다. 이는 창 종료 여부를 묻는 모달을 발생시키에는 최적의 시점입니다.
+
+### [앱 상태 관리](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/managing-application-state-)
+
+---
+
+```c++
+struct TKUserAccount
+{
+	UINT16 userId;
+	const wchar_t* userName;
+	const wchar_t* userDescription;
+};
+```
+
+우선 사용자 정보를 담는 임의의 구조체를 생성합니다.
+
+```c++
+//wWinMain function
+TKUserAccount *userAccount = new(std::nothrow) TKUserAccount();
+	userAccount->userId = 0;
+	userAccount->userName = L"timothy-20";
+	userAccount->userDescription = L"This is timothy-20's account.";
+
+	HWND hWnd = CreateWindowEx(
+		0,
+		CLASS_NAME,
+		L"Learn windows programming",
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+		NULL,
+		NULL,
+		hInstance,
+		userAccount
+	);
+```
+
+포인터 userAccount를 초기화 한 뒤 **CreateWindowEx** 함수의 마지막 void* 파라미터에 해당 구조체를 넘겨줍니다.
+
+```c++
+//WindowProc CALLBACK function
+TKUserAccount* userAccount = nullptr;
+
+	if (uMsg == WM_CREATE)
+	{
+		CREATESTRUCT* cs = reinterpret_cast<CREATESTRUCT*>(lParam);
+		userAccount = reinterpret_cast<TKUserAccount*>(cs->lpCreateParams);
+
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)userAccount);
+	}
+```
+해당 값은 WindowProc 콜백의 WM_CREATE 메시지 수신 때부터 lParam 변수의 **CREATESTURCT** 구조체를 통해 확인할 수 있습니다. 
+이때 구조체의 **lpCreateParams** 멤버의 void* 값을 TKUserAccount* 타입으로 변환해줍니다.
+초기화 하였던 TKUserAccount의 구조체로 수신하였고 이를 **SetWindowLongPtr** 함수를 통해 창의 인스턴스 데이터에 해당 포인터 구조체를 등록합니다.
+
+```c++
+else 
+	{
+		LONG_PTR lp = GetWindowLongPtr(hWnd, GWLP_USERDATA);
+		userAccount = reinterpret_cast<TKUserAccount*>(lp);
+
+		if (userAccount != nullptr)
+		{
+			OutputDebugString(userAccount->userDescription);
+			OutputDebugString(L"\n");
+		}
+	}
+```
+최초 생성 시점 이후로 모든 메시지 발생 상황에서 창 인스턴스에 등록된 사용자 정의 구조체를 다시 가져옵니다.
+
+<img src="public/result-screenshot/debug-result-221202-01.PNG"><br>
+따로 시점을 정해두지 않으니, 앱이 동작하는 동안의 모든 이벤트 상황에서 호출되었습니다. 정상적으로 userAccount의 userDescription을 출력합니다.
