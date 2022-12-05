@@ -177,6 +177,7 @@ TKUserAccount* userAccount = nullptr;
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)userAccount);
 	}
 ```
+
 해당 값은 WindowProc 콜백의 WM_CREATE 메시지 수신 때부터 lParam 변수의 **CREATESTURCT** 구조체를 통해 확인할 수 있습니다. 
 이때 구조체의 **lpCreateParams** 멤버의 void* 값을 TKUserAccount* 타입으로 변환해줍니다.
 초기화 하였던 TKUserAccount의 구조체로 수신하였고 이를 **SetWindowLongPtr** 함수를 통해 창의 인스턴스 데이터에 해당 포인터 구조체를 등록합니다.

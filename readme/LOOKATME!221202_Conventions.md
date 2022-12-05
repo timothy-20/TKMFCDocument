@@ -12,29 +12,31 @@
 
 #### 1. 공통 항목
 
-| 접두어                    | 데이터 타입                         |
-|------------------------|--------------------------------|
-| b                      | byte, boolean                  |
-| n(number로 추정)          | int, short                     |
-| i(index integer로 추정)   | int, short (주로 인덱스)            |
+| 접두어                     | 데이터 타입                         |
+|-------------------------|--------------------------------|
+| b                       | byte, boolean                  |
+| n (number로 추정)          | int, short                     |
+| i (index integer로 추정)   | int, short (주로 인덱스)            |
 | c (capacity integer로 추정 | int, short (주로 크기로 사용)         |
-| l                      | long                           |
-| f                      | float                          |
-| ld                     | long double                    |
-| w                      | word (unsigned shot)           |
-| dw                     | double word (unsigned long)    |
-| qw                     | quad word (unsigend long long) |
-| ch                     | char                           |
+| l                       | long                           |
+| f                       | float                          |
+| ld                      | long double                    |
+| w                       | word (unsigned shot)           |
+| dw                      | double word (unsigned long)    |
+| qw                      | quad word (unsigend long long) |
+| ch                      | char                           |
 | sz (string to zero로 추정) | NULL로 끝나는 문자열                  |
-| str (std::string)      | c++ 문자열                        |
-| arr (array)            | 배열 (문자열 제외, 조합 가능)             |
-| p                      | 포인터 (16, 32bit, 조합 가능)         |
-| lp                     | 포인터 (32, 64bit, 조합 가능          |
-| psz                    | NULL로 끝나는 문자열 포인터 (16, 32bit)  |
-| lpsz                   | NULL로 끝나는 문자열 포인터 (32, 64bit)  |
-| fn (function으로 추정)     | 함수                             |
-| pfn                    | 함수 포인터(16, 32bit)              |
-| lpfn                   | 함수 포인터(64bit)                  |
+| str (std::string)       | c++ 문자열                        |
+| arr (array)             | 배열 (문자열 제외, 조합 가능)             |
+| p                       | 포인터 (16, 32bit, 조합 가능)         |
+| lp                      | 포인터 (32, 64bit, 조합 가능          |
+| psz                     | NULL로 끝나는 문자열 포인터 (16, 32bit)  |
+| lpsz                    | NULL로 끝나는 문자열 포인터 (32, 64bit)  |
+| fn (function으로 추정)      | 함수                             |
+| pfn                     | 함수 포인터(16, 32bit)              |
+| lpfn                    | 함수 포인터(64bit)                  |
+
+이해를 돕기 위한 짧은 설명을 추가해 두었습니다.
 
 #### 2. OOP
 
