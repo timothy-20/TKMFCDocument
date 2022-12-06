@@ -7,6 +7,8 @@
 
 ### [의사 요소 예제를 통해 COM 바라보기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/creating-an-object-in-com)
 
+---
+
 ```c++
 //global
 interface IDrawable
@@ -37,6 +39,8 @@ CoUninitialize();
 ```
 
 ### [열기 대화 상자 예제를 통해 COM 바라보기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/example--the-open-dialog-box)
+
+---
 
 ```c++
 HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
@@ -98,6 +102,10 @@ CoUninitialize();
 // 메시지 상자를 통해 파일 경로를 표시합니다.
 ```
 가독성을 높이기 위해 중첩 if문을 피해 작성했습니다.
+
+### 결과 화면
+
+---
 
 <img src="public/result-screenshot/22.12.05./file-open-dialog-example-01.PNG">
 
