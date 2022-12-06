@@ -197,5 +197,5 @@ else
 ```
 최초 생성 시점 이후로 모든 메시지 발생 상황에서 창 인스턴스에 등록된 사용자 정의 구조체를 다시 가져옵니다.
 
-<img src="public/result-screenshot/debug-result-221202-01.PNG"><br>
+<img src="public/result-screenshot/22_12_02_/debug-result-221202-01.PNG"><br>
 따로 시점을 정해두지 않으니, 앱이 동작하는 동안의 모든 이벤트 상황에서 호출되었습니다. 정상적으로 userAccount의 userDescription을 출력합니다.

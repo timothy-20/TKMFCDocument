@@ -9,7 +9,6 @@
 ### [창(Window) 이란?](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/what-is-a-window-)
 
 ---
-
 Windows programming에서 창의 개념은 포괄적입니다. 버튼, 편집 상자 등의 ui control 요소들도 창에 해당합니다.
 
 특징을 정리하자면
@@ -21,7 +20,6 @@ Windows programming에서 창의 개념은 포괄적입니다. 버튼, 편집 �
 ### [부모 창과 자식 창](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/what-is-a-window-#parent-windows-and-owner-windows)
 
 ---
-
 <img src="public/window-parent-children-image.png">
 > 출처: [**MSDN - 부모 Windows 및 소유자 Windows** 섹션에서 2번째 이미지](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/what-is-a-window-#parent-windows-and-owner-windows)
 
@@ -31,15 +29,14 @@ Windows programming에서 창의 개념은 포괄적입니다. 버튼, 편집 �
 ### [창 핸들](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/what-is-a-window-#window-handles)
 
 ---
-
 windows programming에서 매우 핵심적인 개념인 **HWND**가 이에 해당합니다. 이는 **CreateWindow** 및 **CreateWindowEx**에서 생성합니다.
 창 핸들은 포인터가 아닌 구조체로 되어 있음을 유의해야 합니다.
 
 ### [화면 및 창 좌표](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/what-is-a-window-#screen-and-window-coordinates)
 
 ---
-
 <img src="public/window-points-image.png">
+
 > 출처: [**MSDN - 화면 및 창 좌표** 섹션에서 2번째 이미지](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/what-is-a-window-#parent-windows-and-owner-windows)
 
 해당 항목은 이전 openGL, ios 코드를 이용한 ui 구성 등의 개념에서 무척이나 친숙했습니다. 
