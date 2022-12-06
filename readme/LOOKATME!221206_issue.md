@@ -2,7 +2,7 @@
 
 > **date**: 22.12.06 - <br>
 > **author**: timothy-20 <br>
-> **subject**: c++ 문법에 대한 공부를 진행하던 중 막힌 부분에 대하여.<br>
+> **subject**: c++ 적용 실습 중 막힌 부분에 대하여.<br>
 > **project name**: TKMFCApplication221201
 
 ### 22.12.06. 09:46에 발견한 이슈
@@ -62,3 +62,6 @@ constexpr 키워드를 지우고 재실행하였습니다.
 <img src="public/result-screenshot/22_12_06_/debug-result-221206-02.PNG">
 
 > **result: 5** //정상적으로 출력됩니다.
+
+함수가 꼭 constexpr을 위해서가 아니더라도 키워드를 사용할 수 있습니다(인자 값에 따라 일반 함수로도 동작하기 때문). 하지만 위와 같이
+컴파일 과정에 지정을 주는 선언을 하는 경우에는 constexpr의 용법을 정확히 이해하고 사용하여야 겠습니다.

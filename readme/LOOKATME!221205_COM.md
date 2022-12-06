@@ -46,71 +46,57 @@ CoUninitialize();
 HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
 // COM 라이브러리를 초기화합니다.
 
-if (FAILED(hr))
+if (SUCCEEDED(hr))
 {
-    OutputDebugString(L"Fail COM initialize.");
-    return 0;
+    IFileOpenDialog* fileOpenDialog;
+    hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&fileOpenDialog));
+    // Common item dialog를 만듭니다. IFileOpenDialog에 대한 포인터를 가져옵니다.
+    
+    if (SUCCEEDED(hr))
+    {
+        hr = fileOpenDialog->Show(NULL);
+        // 대화 상자를 표시합니다. 대화 상자는 사용자가 해제하기 이전까지 창을 차단합니다.
+
+        if (SUCCEEDED(hr))
+        {
+            IShellItem* item;
+            hr = fileOpenDialog->GetResult(&item);
+            // Shell 항목 개체라는 두 번째 DOM 개체를 받습니다.
+            // IShellItem 인터페이스를 구현하는 항목은 사용자가 선택한 파일을 나타냅니다.
+
+            if (SUCCEEDED(hr))
+            {
+                PWSTR pszFilePath;
+                hr = item->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+                //문자열 형식의 파일 경로를 가져옵니다.
+                
+                if (SUCCEEDED(hr))
+                {
+                    MessageBox(NULL, pszFilePath, L"File Path", MB_OK);
+                    // 메시지 상자를 통해 파일 경로를 표시합니다.
+                    CoTaskMemFree(pszFilePath);
+                }
+
+                item->Release();
+            }
+        }
+
+        fileOpenDialog->Release();
+    }
+
+    CoUninitialize();
 }
-
-IFileOpenDialog* fileOpenDialog;
-hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&fileOpenDialog));
-// Common item dialog를 만듭니다. IFileOpenDialog에 대한 포인터를 가져옵니다.
-
-if (FAILED(hr))
-{
-    OutputDebugString(L"Fail COM create instance.");
-    return 0;
-}
-
-hr = fileOpenDialog->Show(NULL);
-// 대화 상자를 표시합니다. 대화 상자는 사용자가 해제하기 이전까지 창을 차단합니다.
-
-if (FAILED(hr))
-{
-    OutputDebugString(L"Fail to show file open dialog.");
-
-    fileOpenDialog->Release();
-    return 0;
-}
-
-IShellItem* item;
-hr = fileOpenDialog->GetResult(&item);
-// Shell 항목 개체라는 두 번째 DOM 개체를 받습니다.
-// IShellItem 인터페이스를 구현하는 항목은 사용자가 선택한 파일을 나타냅니다.
-
-if (FAILED(hr))
-{
-    OutputDebugString(L"Fail to get result.");
-    return 0;
-}
-
-PWSTR pszFilePath;
-hr = item->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
-//문자열 형식의 파일 경로를 가져옵니다.
-
-if (FAILED(hr))
-{
-    OutputDebugString(L"Fail to get display name.");
-
-    item->Release();
-    return 0;
-}
-
-MessageBox(NULL, pszFilePath, L"File Path", MB_OK);
-CoTaskMemFree(pszFilePath);
-CoUninitialize();
-// 메시지 상자를 통해 파일 경로를 표시합니다.
 ```
-가독성을 높이기 위해 중첩 if문을 피해 작성했습니다.
+중첩 if를 피하려는 시도를 하였으나, Reference Couting에 대한 처리에 있어 가장 적절하게 짜여져 있음을 인정하여 문서와 동일하게 구현하였습니다.
 
 ### 결과 화면
 
 ---
 
-<img src="public/result-screenshot/22.12.05./file-open-dialog-example-01.PNG">
+<img src="public/result-screenshot/22_12_05_/file-open-dialog-example-01.PNG">
 
 > file open dialog가 발생합니다. README.MD 파일을 선택해 진행했습니다.
 
-<img src="public/result-screenshot/22.12.05./file-open-dialog-example-02.PNG">
+<img src="public/result-screenshot/22_12_05_/file-open-dialog-example-02.PNG">
 
 > 메시지 박스에서 파일 경로가 표시됩니다.
