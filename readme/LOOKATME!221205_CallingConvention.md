@@ -5,7 +5,8 @@
 > **subject**: __stdcall, __cdecl과 같은 window programming에서 언급되는 calling convention에 대해서.<br>
 > **project name**: TKMFCApplication221201
 
-### __stdcall(WINAPI), 당신은 누구인가?
+__stdcall(WINAPI), 당신은 누구인가?
+---
 > 출처: https://mindgear.tistory.com/73
 
 함수 호출 방식을 표시하는 지정자입니다. 일반적으로 함수명 앞에 적어둡니다. __stdcall을 제외하고도 많은 호출 방식 지정자가 있습니다.

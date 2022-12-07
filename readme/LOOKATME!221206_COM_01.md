@@ -5,8 +5,7 @@
 > **subject**: COM 개체의 수명 관리에 대하여.<br>
 > **project name**: TKMFCApplication221201
 
-### [개체의 수명 관리](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/managing-the-lifetime-of-an-object)
-
+[개체의 수명 관리](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/managing-the-lifetime-of-an-object)
 ---
 모든 COM 인터페이스 개체는 **IUnknown 인터페이스**를 직, 간접적으로 상속하여, 개체의 수명을 제어하는데 사용합니다.
 인터페이스는 3가지 메서드를 정의하는데,
@@ -55,16 +54,14 @@ hr = fileOpenDialog->GetResult(&item);
 item->Release();
 ```
 
-### [개체에 인터페이스 요청](https://learn.microsoft.com/en-us/windows/win32/learnwin32/asking-an-object-for-an-interface)
-
+[개체에 인터페이스 요청](https://learn.microsoft.com/en-us/windows/win32/learnwin32/asking-an-object-for-an-interface)
 ---
 COM 개체의 'QueryInterface'를 사용합니다.
 QueryInterface 는 C++에서 dynamic_cast 키워드의 언어 독립적 버전으로 생각할 수 있습니다.
 
 추가적인 작성 요함.
 
-### [COM의 메모리 할당](https://learn.microsoft.com/en-us/windows/win32/learnwin32/memory-allocation-in-com)
-
+[COM의 메모리 할당](https://learn.microsoft.com/en-us/windows/win32/learnwin32/memory-allocation-in-com)
 ---
 COM이 자체 메모리 할당 기능을 정의하는데 의문이 있었다. c에는 동적 메모리 관리를 위해 malloc(), free() 함수가, 
 c++에는 new, delete 키워드가 존재한다.

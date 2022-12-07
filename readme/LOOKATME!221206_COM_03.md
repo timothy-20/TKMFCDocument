@@ -5,8 +5,7 @@
 > **subject**: COM 오류 처리에 대하여.<br>
 > **project name**: TKMFCApplication221201
 
-### [COM의 오류 처리](https://learn.microsoft.com/en-us/windows/win32/learnwin32/error-handling-in-com)
-
+[COM의 오류 처리](https://learn.microsoft.com/en-us/windows/win32/learnwin32/error-handling-in-com)
 ---
 **HRESULT** 값으로 식별할 수 있는 결과는 8종류가 있습니다. 이 중 6개는 'E_'로 시작하는 에러코드, 2개는 'S_'로 시작하는 성공 여부에 대한 코드입니다.
 여기서 주목할 것은 'S_'로 시작하는 성공 코드인 **S_OK**와 **S_FALSE**입니다(나머지 에러 코드에 대해서는 출처로 남긴 MSDN에서 확인 바랍니다).
@@ -26,8 +25,7 @@ if (FAILED(hr))
 특정 에러에 대해서는 'hr == SOME_ERROR_STATE'와 같이 특정 분기를 만들 수 있습니다.
 하지만 그렇지 않은 경우, 해당 함수들을 이용해 나머지 경우를 처리하도록 합시다.
 
-### [오류 처리 패턴](https://learn.microsoft.com/en-us/windows/win32/learnwin32/error-handling-in-com#patterns-for-error-handling)
-
+[오류 처리 패턴](https://learn.microsoft.com/en-us/windows/win32/learnwin32/error-handling-in-com#patterns-for-error-handling)
 ---
 패턴들에는 장, 단점이 있으며 취향의 문제로 선택이 갈릴 수 있습니다. 모쪼록 상황에 맞는 사용이 중요한 것 같습니다.
 > 1. HRESULT 값을 반환하는 모든 구간에서 에러 감지.

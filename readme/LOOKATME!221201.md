@@ -4,14 +4,11 @@
 > **author**: timothy-20 <br>
 > **subject**: windows mfc programming 이해를 위한 학습 내용.
 
-### [Windows Procedures](https://learn.microsoft.com/en-us/windows/win32/winmsg/about-window-procedures)
-
+[Windows Procedures](https://learn.microsoft.com/en-us/windows/win32/winmsg/about-window-procedures)
 ---
+MSDN 및 책의 내용을 참고하여 정리할 것. 중요한 섹션.
 
-
-
-### [Windows Message](https://learn.microsoft.com/ko-kr/windows/win32/winmsg/about-messages-and-message-queues)
-
+[Windows Message](https://learn.microsoft.com/ko-kr/windows/win32/winmsg/about-messages-and-message-queues)
 ---
 
 Windows 기반 어플리케이션은 **이벤트 기반** 입니다. 
@@ -36,15 +33,13 @@ Windows 기반 어플리케이션은 **이벤트 기반** 입니다.
 #### 2. 직접 전달되는 메시지
 >
 
-### [Message Map이란?](https://learn.microsoft.com/en-us/cpp/mfc/reference/message-maps-mfc?view=msvc-170)
-
+[Message Map이란?](https://learn.microsoft.com/en-us/cpp/mfc/reference/message-maps-mfc?view=msvc-170)
 ---
 
 메시지 맵은 특정 메시지가 발생했을 때, 어떤 함수(**OnCreate** 같이 요소의 생성 시 발생하는 메시지 핸들러 함수)를 호출해야 하는지 명시하는 매크로의 집합입니다([출처](https://holyhacker.tistory.com/89)).
 window mfc의 메크로 구현은 WIN32 API의 창 프로시저 함수에서의 switch case문을 대체한 것 입니다.
 
-### [Message Map Macros(MFC)](https://learn.microsoft.com/ko-kr/cpp/mfc/reference/message-map-macros-mfc?view=msvc-170)
-
+[Message Map Macros(MFC)](https://learn.microsoft.com/ko-kr/cpp/mfc/reference/message-map-macros-mfc?view=msvc-170)
 ---
 
 메시지 맵을 지원하기 위한 mfc의 매크로입니다.<br>

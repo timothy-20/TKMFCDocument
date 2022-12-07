@@ -45,5 +45,5 @@ CFRelease(cfArray);
 기본적으로 NSType에서 CFType으로의 bridge 형 변환에 대해서는 CFType의 변수에 대해서 할당 해제해 줄 필요가 없지만(NSType 원본 값이 ARC를 통해 스코프를 벗어나면 할당 해제됩니다), 
 CFType이 원본인 경우에 원본 값에 대한 어떤한 retain 혹은 release를 걸지 않습니다(일반적인 RC 방식으로 관리해주어야 합니다).
 
-그렇기에 CFArrayCreate에서 Retain 걸린 것을 반드시 스코프가 종료되기 이전에 할당 해 주어야 합니다.
+그렇기에 CFArrayCreate에서 Retain 걸린 것을 반드시 스코프가 종료되기 이전에 할당 헤제해 주어야 합니다.
 

@@ -5,8 +5,7 @@
 > **subject**: WinAPI의 COM 라이브러리에 대하여.<br>
 > **project name**: TKMFCApplication221201
 
-### [의사 요소 예제를 통해 COM 바라보기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/creating-an-object-in-com)
-
+[의사 요소 예제를 통해 COM 바라보기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/creating-an-object-in-com)
 ---
 
 ```c++
@@ -38,8 +37,7 @@ CoUninitialize();
 
 ```
 
-### [열기 대화 상자 예제를 통해 COM 바라보기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/example--the-open-dialog-box)
-
+[열기 대화 상자 예제를 통해 COM 바라보기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/example--the-open-dialog-box)
 ---
 
 ```c++
@@ -89,8 +87,7 @@ if (SUCCEEDED(hr))
 ```
 중첩 if를 피하려는 시도를 하였으나, Reference Couting에 대한 처리에 있어 가장 적절하게 짜여져 있음을 인정하여 문서와 동일하게 구현하였습니다.
 
-### 결과 화면
-
+결과 화면
 ---
 
 <img src="public/result-screenshot/22_12_05_/file-open-dialog-example-01.PNG">

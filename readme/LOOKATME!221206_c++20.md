@@ -9,22 +9,18 @@
 > 참고한 글:
 > - https://andreasfertig.blog/2021/01/cpp20-aggregate-pod-trivial-type-standard-layout-class-what-is-what/
 
-### Aggregate
-
+Aggregate
 ---
 
 
-### POD
-
+POD
 ---
 
 
-### Trivial Type
-
+Trivial Type
 ---
 
 
-### 표준 레이아웃 클래스
-
+표준 레이아웃 클래스
 ---
 

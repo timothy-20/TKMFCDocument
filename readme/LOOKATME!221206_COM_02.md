@@ -5,8 +5,7 @@
 > **subject**: COM 코딩 관례에 대하여.<br>
 > **project name**: TKMFCApplication221201
 
-### [__uuidof 연산자](https://learn.microsoft.com/en-us/windows/win32/learnwin32/com-coding-practices#the-__uuidof-operator), [IID_PPV_ARGS 매크로](https://learn.microsoft.com/en-us/windows/win32/learnwin32/com-coding-practices#the-iid_ppv_args-macro)
-
+[__uuidof 연산자](https://learn.microsoft.com/en-us/windows/win32/learnwin32/com-coding-practices#the-__uuidof-operator), [IID_PPV_ARGS 매크로](https://learn.microsoft.com/en-us/windows/win32/learnwin32/com-coding-practices#the-iid_ppv_args-macro)
 ---
 1. **__uuidof** 
 > unresolved external symbol "struct _GUID const IID_IDrawable"
@@ -47,8 +46,7 @@ hr = CoCreateInstance(__uuidof(FileOpenDialog),
                       IID_PPV_ARGS(&fileOpenDialog));
 ```
 
-### [SafeRelease 패턴](https://learn.microsoft.com/en-us/windows/win32/learnwin32/com-coding-practices#the-saferelease-pattern)
-
+[SafeRelease 패턴](https://learn.microsoft.com/en-us/windows/win32/learnwin32/com-coding-practices#the-saferelease-pattern)
 ---
 ```c++
 //global
@@ -104,8 +102,7 @@ return 0
 이전에는 함수의 결과값(HRESULT)이 분기문에서 'SUCCEEDED == TRUE'로 반환되면 생성한 포인터에 해제를 진행했습니다. 하지만 'SafeRelease'의
 null check로 인해 if문 중첩을 피하는 형태로 진행할 수 있게 되었습니다.
 
-### [COM 스마트 포인터](https://learn.microsoft.com/en-us/windows/win32/learnwin32/com-coding-practices#com-smart-pointers)
-
+[COM 스마트 포인터](https://learn.microsoft.com/en-us/windows/win32/learnwin32/com-coding-practices#com-smart-pointers)
 ---
 하지만 c++에서 new, delete 키워드가 생긴 이유가 그렇듯, 'SafeRelease'를 이용한 포인터의 관리는 여전히 개발자의 실수를 유발시킵니다(각 포인터가 범위를 벗어나기 전에 함수가 호출되어야 하는 점 등).
 또한 모든 인터페이스 포인터를 NULL로 초기화한다는 점이 세부적인 구현에 대한 처리를 어렵게 합니다.

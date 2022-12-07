@@ -6,8 +6,7 @@
 
 #### ※ 해당 README는 문서는 실습 내용을 정리하고 있습니다.
 
-### [창 구현하기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/your-first-windows-program)
-
+[창 구현하기](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/your-first-windows-program)
 ---
 
 > visual studio 설정에서 기존에 mfc 빌드를 위해 '**MFC 사용 설정**'을
@@ -103,8 +102,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
 소스 코드의 주석은 MDNS 문서의 '첫 번째 Windows 프로그램' 항목의 가이드를 정리했음을 알려드립니다.
 
-### [창 제거 흐름](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/closing-the-window)
-
+[창 제거 흐름](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/closing-the-window)
 ---
 
 <img src="public/window-close-flow.png">
@@ -128,8 +126,7 @@ case WM_CLOSE:
 WM_CLOSE에 대한 상태를 감지하는 case는 위와 같습니다.
 사용자가 창을 닫는 이벤트를 발생할 시, 창을 파괴하기 이전에 호출됩니다. 이는 창 종료 여부를 묻는 모달을 발생시키에는 최적의 시점입니다.
 
-### [앱 상태 관리](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/managing-application-state-)
-
+[앱 상태 관리](https://learn.microsoft.com/ko-kr/windows/win32/learnwin32/managing-application-state-)
 ---
 
 ```c++
