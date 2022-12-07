@@ -1,8 +1,0 @@
-# ninja log v5
-641	964	6915595862911241	TKCppAlgorithm221130.exe	db7f4ea0934cd01a
-6	636	6915595859671243	CMakeFiles/TKCppAlgorithm221130.dir/main.cpp.obj	9fea04de3f215c23
-17	641	6915595859721867	CMakeFiles/TKCppAlgorithm221130.dir/TKInstance.cpp.obj	63eca29035e7c3a5
-3	582	6915753253202023	build.ninja	2f456a54101d8f00
-1	768	6915753262035279	CMakeFiles/TKCppAlgorithm221130.dir/src/main.cpp.obj	f9e8e2564d03f534
-7	769	6915753262045281	CMakeFiles/TKCppAlgorithm221130.dir/src/TKInstance.cpp.obj	57f9ed5ef6c8bebf
-770	1006	6915753264362999	TKCppAlgorithm221130.exe	b093f7aabfc8f1a8

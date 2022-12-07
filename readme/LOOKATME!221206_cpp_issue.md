@@ -5,10 +5,9 @@
 > **subject**: c++ 적용 실습 중 막힌 부분에 대하여.<br>
 > **project name**: TKMFCApplication221201
 
-### 22.12.06. 09:46에 발견한 이슈
-
+22.12.06. 09:46에 발견한 이슈
 ---
-> 참고한 글: 
+> 도움이 되었던 글: 
 > - https://stackoverflow.com/questions/5373107/how-to-implement-static-class-member-functions-in-cpp-file
 > - https://boycoding.tistory.com/167
 > - https://boycoding.tistory.com/220
@@ -43,8 +42,7 @@ constexpr int TKStringUtil::getLength(const char* text)
 
 > 함수에 대한 정의 또한 찾지 못하고 있습니다.
 
-### 해결 방안
-
+해결 방안
 ---
 문제는 처음 예상했던 잘못된 static 함수의 사용이 아닌, constexpr 키워드에 있었습니다.
 
