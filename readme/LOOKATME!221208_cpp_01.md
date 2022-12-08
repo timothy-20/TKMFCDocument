@@ -130,17 +130,3 @@ inline void InitializeNumber(int** ppl)
     *ppl = &initialValue;
 }
 ```
-
-cstring과 std::string
----
->출처: https://jhnyang.tistory.com/99
-```c++
-
-```
-
-extern, 그리고 static 키워드
----
->출처: https://boycoding.tistory.com/167
-```c++
-
-```
