@@ -24,7 +24,7 @@
 //WindowProc 함수는 개념에서 두드러졌던 창의 프로시저입니다.
 //창의 모양, 사용자와의 상호작용 방식 등의 동작을 정의합니다.
 //WNDCLASS 구조체에 함수 포인터 형태로 등록됩니다.
-//WindowProc 프로시저 함수의 매게변수에 대한 설명은 아래와 같습니다.
+//WindowProc 프로시저 함수의 매게 변수에 대한 설명은 아래와 같습니다.
 //1. hWnd는 창에 대한 핸들입니다.
 //2. uMsg는 메시지 코드입니다. DispatchMessage 함수를 통해 전달된 MSG 구조체의 메시지 코드가 맞습니다.
 //3. wParam, lParam은 메시지와 관련된 추가 데이터입니다.
@@ -41,7 +41,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 		HDC hdc = BeginPaint(hWnd, &ps);
 
         //rcPaint 멤버는 paint update 관련 지역에 대한 값입니다.
-        //FillRect 함수의 3번째 매게변수에는 HBRUSH 변수를 통해 view에서 업데이트 될 색상을 지정합니다.
+        //FillRect 함수의 3번째 매게 변수에는 HBRUSH 변수를 통해 view에서 업데이트 될 색상을 지정합니다.
 		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
 		EndPaint(hWnd, &ps);
 
@@ -82,7 +82,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 		return 0;
 
     //새 창에 대한 핸들을 전달하여 화면에 표시합니다.
-    //nCmdShow 매게변수를 이용하여 창을 최소화하거나 최대화 할 수 있습니다.
+    //nCmdShow 매게 변수를 이용하여 창을 최소화하거나 최대화 할 수 있습니다.
 	ShowWindow(hWnd, nCmdShow);
 
     //프로그램의 실행 흐름 가운데, 예측하기 어려운 이벤트(사용자, 운영체제)를 감지합니다.

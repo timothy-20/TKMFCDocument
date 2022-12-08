@@ -24,7 +24,7 @@ MS Visual C++를 사용하는 경우라면 __uuidof 연산자를 사용할 필�
 2. **IID_PPV_ARGS**
 > reinterpret_cast<<b style="color: skyblue;">void**</b>>(&fileOpenDialog)
 
-'CoCreateInstance'와 'QueryInterface'의 최종 매게변수를 void** 타입으로 강제 변환하는데서 오는 유형 불일치를 예방하기 위한 매크로입니다.
+'CoCreateInstance'와 'QueryInterface'의 최종 매게 변수를 void** 타입으로 강제 변환하는데서 오는 유형 불일치를 예방하기 위한 매크로입니다.
 
 'reinterpret_cast'는 C++ 타입 시스템을 우회합니다. 그러므로<br>
 **최상의 경우**, 개체가 요청된 인터페이스를 구현하지 않으면 호출이 실패합니다.<br>
