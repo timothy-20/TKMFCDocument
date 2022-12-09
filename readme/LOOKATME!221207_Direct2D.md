@@ -48,14 +48,80 @@ D2D1_ELLIPSE m_ellipse;
 ```c++
 ID2D1Factory* p_factory;
 
-void CalculateLayout();
-HRESULT CreateGraphicsResources();
-void DiscardGraphicsResources();
-void OnPaint();
-void ReSize();
+//usage
+HRESULT handleResult = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &this->p_factory);
 ```
+> 팩토리 개체에 대한 멤버 변수 선언입니다.
 
-소스 코드
+Direct2D를 사용하기 위해서는 해당 팩토리 개체에 인스턴스를 만드는 것입니다. **D2D1CreateFactory** 함수를 통해 생성할 수 있으며 스레드 호출 지원에 대한 
+옵션을 지정할 수 있습니다. 프로그램에서 스레드를 요청하는 형태에 따라서 옵션을 설정하는 편이 더 효율적입니다.
+
+<img src="public/direct2d-factory.png"><br>
+프로그래밍에서의 디자인 패턴 중 [**팩토리 패턴**](https://velog.io/@jinh2352/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4-with-C-Factory-Pattern-%ED%8C%A9%ED%86%A0%EB%A6%AC-%ED%81%B4%EB%9E%98%EC%8A%A4)만 보더라도 알 수 있다시피 팩토리는 특정 유형의 개체를 만듭니다.
+
+```c++
+HRESULT TKMainWindow::CreateGraphicsResources()
+{
+    HRESULT handleResult = S_OK;
+    
+    if (this->p_renderTarget == NULL)
+    {
+        RECT rect = {};
+        
+        ::GetClientRect(this->m_hwnd, &rect);
+        
+        D2D1_SIZE_U size = D2D1::SizeU(rect.right, rect.bottom);
+        handleResult = this->p_factory->CreateHwndRenderTarget(
+            D2D1::RenderTargetProperties(),
+            D2D1::HwndRenderTargetProperties(this->m_hwnd, size),
+            &p_renderTarget
+        );
+        
+        //...
+    }
+    
+    return handleResult;
+}
+```
+**CreateHwndRenderTarget** 함수는 창에 대한 렌더링 대상을 만듭니다. 각 매게 변수에 대해 알아보자면, 
+1. 모든 유형의 렌더링 대상의 공통적인 옵션입니다. **D2D1::RenderTargetProperties()** 함수를 통해 기본 옵션을 지정하였습니다. 
+2. 창에 대한 핸들과 렌더링 대상의 크기를 **픽셀 단위**로 지정합니다.
+3. 렌더링 대상의 포인터를 받습니다.
+
+Direct2D로 그리기
+---
+```c++
+void TKMainWindow::OnPaint()
+{
+    HRESULT handleResult = CreateGraphicsResources();
+
+    if (SUCCEEDED(handleResult))
+    {
+        PAINTSTRUCT paint;
+        
+        ::BeginPaint(this->m_hwnd, &paint);
+        
+        this->p_renderTarget->BeginDraw();
+        this->p_renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue));
+        this->p_renderTarget->FillEllipse(this->m_ellipse, this->p_brush);
+        handleResult = this->p_renderTarget->EndDraw();
+        
+        if (FAILED(handleResult) || handleResult == D2DERR_RECREATE_TARGET)
+            this->DiscardGraphicsResources();
+        
+        ::EndPaint(this->m_hwnd, &paint);
+    }
+}
+```
+그리기 함수의 작업 순서는 아래와 같습니다.
+1. 렌더링 대상에서 그리기 시작을 표시합니다.
+2. **Clear** 함수를 통해 배경색을 하늘색(D2D1::ColorF::SkyBlue)으로 채웁니다.
+3. **FillEllipse** 함수를 통해 타원을 그립니다. 'ellipse'는 타원 도형에 대한 구조체, 'this->p_brush'는 지정된 브러시 멤버 변수입니다.
+4. 랜더링 대상에서 그리기가 완료됨을 표시합니다. 
+
+
+
+전체 소스 코드
 ---
 ```c++
 //TKMainWindow.h
@@ -101,128 +167,128 @@ public:
 
 void TKMainWindow::CalculateLayout()
 {
-if (this->p_renderTarget != nullptr)
-{
-D2D1_SIZE_F size = this->p_renderTarget->GetSize();
-const float x = size.width / 2;
-const float y = size.height / 2;
-const float radius = min(x, y);
-this->m_ellipse = D2D1::Ellipse(D2D1::Point2(x, y), radius, radius);
-}
+    if (this->p_renderTarget != nullptr)
+    {
+        D2D1_SIZE_F size = this->p_renderTarget->GetSize();
+        const float x = size.width / 2;
+        const float y = size.height / 2;
+        const float radius = min(x, y);
+        this->m_ellipse = D2D1::Ellipse(D2D1::Point2(x, y), radius, radius);
+    }
 }
 
 HRESULT TKMainWindow::CreateGraphicsResources()
 {
-HRESULT handleResult = S_OK;
-
-if (this->p_renderTarget == NULL)
-{
-RECT rect = {};
-
-::GetClientRect(this->m_hwnd, &rect);
-
-D2D1_SIZE_U size = D2D1::SizeU(rect.right, rect.bottom);
-handleResult = this->p_factory->CreateHwndRenderTarget(
-D2D1::RenderTargetProperties(),
-D2D1::HwndRenderTargetProperties(this->m_hwnd, size),
-&p_renderTarget
-);
-
-if (SUCCEEDED(handleResult))
-{
-const D2D1_COLOR_F color = D2D1::ColorF(1.0F, 1.0F, 0.0F);
-handleResult = this->p_renderTarget->CreateSolidColorBrush(color, &this->p_brush);
-
-if (SUCCEEDED(handleResult))
-this->CalculateLayout();
-}
-}
-
-return handleResult;
+    HRESULT handleResult = S_OK;
+    
+    if (this->p_renderTarget == NULL)
+    {
+        RECT rect = {};
+        
+        ::GetClientRect(this->m_hwnd, &rect);
+        
+        D2D1_SIZE_U size = D2D1::SizeU(rect.right, rect.bottom);
+        handleResult = this->p_factory->CreateHwndRenderTarget(
+            D2D1::RenderTargetProperties(),
+            D2D1::HwndRenderTargetProperties(this->m_hwnd, size),
+            &p_renderTarget
+        );
+        
+        if (SUCCEEDED(handleResult))
+        {
+            const D2D1_COLOR_F color = D2D1::ColorF(1.0F, 1.0F, 0.0F);
+            handleResult = this->p_renderTarget->CreateSolidColorBrush(color, &this->p_brush);
+            
+            if (SUCCEEDED(handleResult))
+                this->CalculateLayout();
+        }
+    }
+    
+    return handleResult;
 }
 
 void TKMainWindow::DiscardGraphicsResources()
 {
-::TKSafeRelease(&this->p_renderTarget);
-::TKSafeRelease(&this->p_brush);
+    ::TKSafeRelease(&this->p_renderTarget);
+    ::TKSafeRelease(&this->p_brush);
 }
 
 void TKMainWindow::OnPaint()
 {
-HRESULT handleResult = CreateGraphicsResources();
+    HRESULT handleResult = CreateGraphicsResources();
 
-if (SUCCEEDED(handleResult))
-{
-PAINTSTRUCT paint;
-
-::BeginPaint(this->m_hwnd, &paint);
-
-this->p_renderTarget->BeginDraw();
-this->p_renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue));
-this->p_renderTarget->FillEllipse(this->m_ellipse, this->p_brush);
-handleResult = this->p_renderTarget->EndDraw();
-
-if (FAILED(handleResult) || handleResult == D2DERR_RECREATE_TARGET)
-this->DiscardGraphicsResources();
-
-::EndPaint(this->m_hwnd, &paint);
-}
+    if (SUCCEEDED(handleResult))
+    {
+        PAINTSTRUCT paint;
+        
+        ::BeginPaint(this->m_hwnd, &paint);
+        
+        this->p_renderTarget->BeginDraw();
+        this->p_renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue));
+        this->p_renderTarget->FillEllipse(this->m_ellipse, this->p_brush);
+        handleResult = this->p_renderTarget->EndDraw();
+        
+        if (FAILED(handleResult) || handleResult == D2DERR_RECREATE_TARGET)
+            this->DiscardGraphicsResources();
+        
+        ::EndPaint(this->m_hwnd, &paint);
+    }
 }
 
 void TKMainWindow::ReSize()
 {
-if (this->p_renderTarget != nullptr)
-{
-RECT rect;
-
-::GetClientRect(this->m_hwnd, &rect);
-
-D2D1_SIZE_U size = D2D1::SizeU(rect.right, rect.bottom);
-
-this->p_renderTarget->Resize(size);
-this->CalculateLayout();
-::InvalidateRect(this->m_hwnd, &rect, FALSE);
-}
+    if (this->p_renderTarget != nullptr)
+    {
+        RECT rect;
+        
+        ::GetClientRect(this->m_hwnd, &rect);
+        
+        D2D1_SIZE_U size = D2D1::SizeU(rect.right, rect.bottom);
+        
+        this->p_renderTarget->Resize(size);
+        this->CalculateLayout();
+        ::InvalidateRect(this->m_hwnd, &rect, FALSE);
+    }
 }
 
 LRESULT TKMainWindow::HandleMessage(UINT umsg, WPARAM wparam, LPARAM lparam)
 {
-switch (umsg)
-{
-case WM_CREATE:
-if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &this->p_factory)))
-return -1;
-
-return 0;
-
-case WM_PAINT:
-{
-/*PAINTSTRUCT ps;
-HDC hdc = BeginPaint(this->m_hwnd, &ps);
-FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
-EndPaint(this->m_hwnd, &ps);*/
-
-this->OnPaint();
-}
-return 0;
-
-case WM_SIZE:
-this->ReSize();
-return 0;
-
-case WM_CLOSE:
-if (MessageBox(this->m_hwnd, L"Do you want quit?", L"Notice", MB_OKCANCEL) == IDOK)
-::DestroyWindow(this->m_hwnd);
-
-return 0;
-
-case WM_DESTROY:
-this->DiscardGraphicsResources();
-::TKSafeRelease(&this->p_factory);
-::PostQuitMessage(0);
-return 0;
-}
-
-return ::DefWindowProc(this->m_hwnd, umsg, wparam, lparam);
+    switch (umsg)
+    {
+    case WM_CREATE:
+        if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &this->p_factory)))
+            return -1;
+    
+        return 0;
+    
+    case WM_PAINT:
+    {
+        /*PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(this->m_hwnd, &ps);
+        FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+        EndPaint(this->m_hwnd, &ps);*/
+        
+        this->OnPaint();
+    }
+    return 0;
+    
+    case WM_SIZE:
+        this->ReSize();
+        return 0;
+    
+    case WM_CLOSE:
+        if (MessageBox(this->m_hwnd, L"Do you want quit?", L"Notice", MB_OKCANCEL) == IDOK)
+            ::DestroyWindow(this->m_hwnd);
+    
+        return 0;
+    
+    case WM_DESTROY:
+        this->DiscardGraphicsResources();
+        ::TKSafeRelease(&this->p_factory);
+        ::PostQuitMessage(0);
+        return 0;
+    }
+    
+    return ::DefWindowProc(this->m_hwnd, umsg, wparam, lparam);
 }
 ```
