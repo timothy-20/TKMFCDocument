@@ -85,3 +85,8 @@ for (short i(0); i < 5; i++)
 }
 ```
 > unique_ptr 객체가 요소인 container를 만들어 보았습니다. 이동 연산을 이용한 'push_back'과 완전 전달이 가능한 'emplace_back'을 이용해 객체를 추가해 보았습니다.  
+
+결과 화면
+---
+<img src="public/result-screenshot/22_12_14_/screenshot-221214-02.png"><br>
+> unique_ptr 객체로 구성된 container의 할당 및 해제가 보입니다. 
