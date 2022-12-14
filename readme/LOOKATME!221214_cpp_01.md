@@ -5,66 +5,83 @@
 > **subject**: c++ 문법을 익히던 도중 시도해 본 내용에 대하여.<br>
 > **project name**: TKMFCApplication221201
 
-constexpr의 const_cast?
+unique_ptr
 ---
-```c++
-constexpr int fn(1);
-//...
-int& mutableFn = const_cast<int&>(fn);
-mutableFn = vsnprintf(&formatted[0], n, format, ap);
-//...
-char result[fn]{};
-```
-<img src="public/result-screenshot/22_12_14_/screenshot-221214-01.png"><br>
-> 실제로 상수 시간에 fn(constexpr)의 초기값으로 배열의 크기가 정해지고, 'const_cast'가 진행된 이후 값이 변동되었기 때문에 배열의 크기는 <b>char[1]</b>입니다.
+> 출처: https://modoocode.com/229
 
-constexpr 또한 const_cast 연산자를 통해 상수성을 제거할 수 있습니다.
-
-생 포인터(raw pointer)의 위험성을 깨닫게 해준 경험
----
 ```c++
-class TKDummy
+typedef struct __USER_INFO
 {
 private:
-	std::string m_name;
-
-protected:
-	std::vector<std::string>* m_names;
+uint16_t m_userId;
+bool m_isPrivate;
 
 public:
-	TKDummy(const std::string& dummyName) : m_name(dummyName)
-	{
-		std::cout << "Create 'TKDummy' object" << std::endl;
+const char* userName{ "" };
+const char* userDescription{ "no descript." };
 
-		this->m_names = new std::vector<std::string>();
-
-		for (int i = 0; i < 10; i++)
-		{
-			std::string newName(::FormatWithChar("%s-%d", this->m_name.c_str(), i));
-			this->m_names->push_back(newName);
-		}
-	}
-	virtual ~TKDummy()
-	{
-		std::cout << "Clear 'TKDummy' object" << std::endl;
-
-		this->m_name = "";
-		delete this->m_names;
-		this->m_names = nullptr;
-	}
-
-	virtual std::vector<std::string>* GetNames() const 
-	{
-		return this->m_names;
-	}
-};
-
-const std::vector<std::string>* GetNamesProxy()
+__USER_INFO() = default;
+__USER_INFO(uint16_t userId, bool isPrivate) : m_userId(userId), m_isPrivate(isPrivate)
 {
-	TKDummy dummy("Timothy");
-	return dummy.GetNames();
+std::cout << "Create __USER_INFO: " << this->m_userId << std::endl;
+}
+
+virtual ~__USER_INFO()
+{
+std::cout << "Destroy __USER_INFO: " << this->m_userId << std::endl;
+}
+
+virtual void ShowSummaryInfo()
+{
+std::cout << ::FormatWithChar("[INFO] %d : This user name is '%s'", this->m_userId, this->userName) << std::endl;
+}
+
+} TKUserInfo;
+```
+> 요소가 될 구조체 'TKUserInfo'입니다.
+
+---
+```c++
+std::unique_ptr<TKUserInfo>info(new TKUserInfo(1, false)); 
+// auto info(std::make_unique<TKUserInfo>(1, false)); 
+
+std::unique_ptr<TKUserInfo>newInfo(std::move(info));
+```
+> unique_ptr 객체 생성 및 이동에 대한 예제입니다. unique_ptr 객체는 유일성을 가집니다. 따라서 복사 생성자는 사용할 수 없습니다. 대신 **std::move**를 이용하여 값을 이동시킵니다(**swap**된다고 생각하면 쉽습니다).
+
+---
+```c++
+void ShowInfoProxy(TKUserInfo* pUserInfo)
+{
+	pUserInfo->ShowSummaryInfo();
+}
+
+// entry point
+auto info(std::make_unique<TKUserInfo>(1, false)); 
+
+::ShowInfoProxy(info.get());
+```
+> 객체의 'ShowSummaryInfo' 멤버 함수를 호출하는 함수입니다. 해당 함수로는 <b>get()</b>를 통해 생 포인터를 전달합니다. 이는 구문 상에서의 'unique_ptr 객체가 유일함'의 의미를 보존하기 위해서입니다(참고한 글에 따르면).
+> 또한 약간이지만, 매게 변수로 unique_ptr 객체를 전달하는 것 보다 생 포인터를 전달하는 것이 좀 더 적은 비용이 들기 때문입니다.
+> 'ShowInfoProxy'의 'pUserInfo'는 'info'가 제거되기 이전까지 유효합니다.
+
+---
+```c++
+using TKUserInfoUP = std::unique_ptr<TKUserInfo>;
+
+std::vector<TKUserInfoUP> upContainer{};
+
+for (short i(0); i < 5; i++)
+{
+    if (i == 3)
+    {
+        upContainer.emplace_back(new TKUserInfo(i, true)); // perfact forwarding
+        continue;
+    }
+
+    TKUserInfoUP upInfo(std::make_unique<TKUserInfo>(i, false));
+
+    upContainer.push_back(std::move(upInfo)); // std::move
 }
 ```
-> 이제까지 문법을 최대한 적용해서 구현해본 소스 코드(잡탕)입니다.
-
-예상하셨겠지만, 위 코드는 'GetNamesProxy' 함수의 범위가 끝나는 순간 멤버 변수가 초기화되며 nullptr를 반환합니다.
+> unique_ptr 객체가 요소인 container를 만들어 보았습니다. 이동 연산을 이용한 'push_back'과 완전 전달이 가능한 'emplace_back'을 이용해 객체를 추가해 보았습니다.  
