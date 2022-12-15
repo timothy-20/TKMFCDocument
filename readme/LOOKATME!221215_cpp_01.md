@@ -5,8 +5,8 @@
 > **subject**: c++ 문법을 익히던 도중 시도해 본 내용에 대하여.<br>
 > **project name**: TKMFCApplication221201
 
-std::vector, rbegin
----
+[1] std::vector, rbegin
+===
 > 참고한 글: https://stackoverflow.com/questions/16609041/c-stl-what-does-base-do
 ```c++
 std::vector<int> container{1, 2, 3, 4, 5};
@@ -47,8 +47,8 @@ std::cout << *((rb + 2).base() - 1) << std::endl;
 > 이제야 의도한 값을 역참조했습니다.
 
 
-shared_ptr
----
+[2] shared_ptr
+===
 > 출처: https://modoocode.com/252
 ```c++
 std::vector<std::shared_ptr<TKDummyClass2>> dummyContainer;
@@ -80,10 +80,14 @@ for (auto iterator((dummyContainer.end() - 1)); iterator != dummyContainer.begin
 사실 굳이 역순으로 지울 필요가 없습니다. **0번 인덱스의 객체 조차도 heap 메모리에 할당된 값(TKDummyClass2)을 shared_ptr로 참조있는 값 중 하나**이기 때문입니다(기존 0번 인덱스의 값이 지워진다고 해서 할당이 해제되지 않음). 
 'begin()'을 이용해 0번 인덱스부터 지워도 여전히 1 ~ 9까지의 인덱스들이 역참조 값을(정확히는 reference count를 0 이상으로) 유지하고 있습니다.
 
-> 그렇기에 해당 예제는 참고한 글과 다르게 하고 싶었던 개인적인 고집에서 비롯된 것입니다:)
+그렇기에 해당 예제는 참고한 글과 다르게 하고 싶었던 개인적인 고집에서 비롯된 것입니다:)
 
 ---
 
+[2.1] shared_str 번외
+---
+> 'main()' 내부에 개별적으로 스코프를 주어 container 안에 각기 생성된 shared_ptr 객체의 소멸을 관찰해 보았습니다.<br>
+> 여기서 제가 알고 싶었던 것은 container 내부의 객체들의 소멸 순서였습니다.
 ```c++
 class TKDummyClass2
 {
@@ -103,9 +107,6 @@ public:
         container.push_back(std::make_shared<TKDummyClass2>(i));
 } // nested scope
 ```
-> 'main()' 내부에 개별적으로 스코프를 주어 container 안에 각기 생성된 shared_ptr 객체의 소멸을 관찰해 보았습니다.<br>
-> 여기서 제가 알고 싶었던 것은 container 내부의 객체들의 소멸 순서였습니다.
-
 <img src="public/result-screenshot/22_12_15_/screenshot-221215-04.png"><br>
 생성된 순서대로 소멸이 진행됩니다.
 
@@ -118,7 +119,5 @@ public:
        arr[i] = std::make_shared<TKDummyClass2>(i);
 } // nested scope
 ```
-> 이번에는 배열로 진행해 보았습니다.
-
 <img src="public/result-screenshot/22_12_15_/screenshot-221215-05.png"><br>
-흥미롭습니다, 이번에는 가장 늦게 생성된 순서대로 소멸이 진행됩니다.
+흥미롭습니다, 배열로 테스트한 경우에는 가장 늦게 생성된 순서대로 소멸이 진행됩니다.
