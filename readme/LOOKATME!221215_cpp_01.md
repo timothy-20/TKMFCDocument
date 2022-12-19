@@ -32,12 +32,12 @@ std::cout << *rb.base() << std::endl;
 
 이를 제가 이해한 방식대로 쉽게 설명해보자면, 
 1. std::vector의 'end()'는 마지막의 다음 요소(nullptr)를 가르킵니다.
-2. 그렇기에 std::vector의 'rbegin()'는 'end()'의 전 요소를 가르켜야 마지막 요소에서 시작할 수 있습니다.
-3. 2번의 **이전 요소 역참조** 원리에 따라 'rb + 2' reverse_iterator 객체의 **논리적 지정** 값은 **4**(nullptr -> 5 -> 4)입니다.
-4. 해당 reverse_iterator의 'base()' 함수는 객체의 논리적 지정을 기준삼아, 이를 iterator로 변경시킵니다.
-5. iterator는 논리적 지정과 물리적 지정이 동일하다. 따라서 4를 가르킵니다. 
+2. 그렇기에 std::vector의 'rbegin()'는 역참조 시 'end()'의 전 요소를 가르켜야 마지막 요소를 가져올 수 있습니다.
+3. 2번의 이전 요소 역참조 원리에 따라 'rb + 2' reverse_iterator 객체의 **논리적 지정** 값은 **4**(nullptr -> 5 -> 4)입니다, 그리고 역참조한 물리적 값(*rb)은 3입니다.
+4. 하지만 해당 reverse_iterator의 'base()' 함수는 객체의 **논리적 지정을 기준**삼아, 이를 iterator로 변경시킵니다.
+5. 정방향 참조자(iterator)는 논리적 지정과 물리적 지정이 동일합니다. 따라서 4를 가르킵니다. 
 
-그러므로 출력은 3, 4여야지 옳습니다.
+그러므로 출력은 3, 4가 맞습니다.
 
 따라서 'rb'와 동일한 'rb.base()' 값을 얻기 위해서는 다음과 같아야 합니다.
 ```c++
@@ -45,7 +45,6 @@ std::cout << *((rb + 2).base() - 1) << std::endl;
 ```
 <img src="public/result-screenshot/22_12_15_/screenshot-221215-03.png"><br>
 > 이제야 의도한 값을 역참조했습니다.
-
 
 [2] shared_ptr
 ===
