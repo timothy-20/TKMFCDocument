@@ -56,6 +56,7 @@ int captionY(::GetSystemMetrics(SM_CYCAPTION));
 'GetSystemMetrics'를 통해 값을 얻었습니다.
 
 [1.4] 창 생성 이후 크기 조정
+---
 ```c++
 ::SetWindowPos(hWndBackground, nullptr, 10, 20, (width - 20), 50, SWP_DRAWFRAME);
 ```
@@ -94,3 +95,6 @@ RECT GetRect(HWND hWnd)
 <img src="public/result-screenshot/22_12_20_/screenshot-221220-01.png">
 
 깔끔하게 배치되었습니다.
+
+### [1.4.1] 내부 요소들이 조정되어 배치되는 사용자 정의 TextField
+위 내용들을 응용하여 구현해 보겠습니다.
