@@ -188,7 +188,7 @@ std::function<void(T)> g_checkType2 = [](T value) -> void
 ```
 함수 포인터로도 응용해 보았습니다
 
-[2.2] 고차함수 구현 연습
+[2.2] 고차함수
 ---
 > 참고한 글:
 > - https://velog.io/@un1945/Swift-%EA%B3%A0%EC%B0%A8%ED%95%A8%EC%88%98-Higher-order-Function
@@ -216,4 +216,37 @@ return element;
 ```
 Swift의 **고차함수**(higher-order function) 'Reduce'를 template과 람다 함수 객체를 이용해 구현해 보았습니다.
 
+[2.3] 클로져를 반환하는 함수
+---
+> 참고한 글:
+> - https://ko.wikipedia.org/wiki/%ED%94%BC%EB%B3%B4%EB%82%98%EC%B9%98_%EC%88%98
+> - https://stackoverflow.com/questions/22708543/how-do-i-return-a-closure-from-a-function
+```c++
+std::function<std::chrono::duration<double>&(void)> GetDurationTime()
+{
+	auto startTime(std::chrono::system_clock::now());
+	
+	return [=] () -> std::chrono::duration<double>& { 
+		std::chrono::duration<double> duration((std::chrono::system_clock::now() - startTime));
+		return duration; 
+	};
+}
 
+long GetFibonacci(uint32_t value)
+{
+	if (value < 2)
+		return value;
+
+	return ::GetFibonacci(value - 1) + ::GetFibonacci(value - 2);
+}
+
+// entry point
+auto durationTime(::GetDurationTime());
+
+std::cout << "Result: " << ::GetFibonacci(42) << std::endl;
+
+std::cout << std::fixed;
+std::cout << "Duration time: " << durationTime().count() << std::endl;
+```
+time end point를 실행시키고 start point와의 차액을 통한 time duration을 반환하는 클로져를 반환하는 함수입니다.
+'GetDurationTime' 함수의 호출과 반환된 클로져의 호출 사이에 특정 동작을 수행하는 코드를 삽입하여 수행 속도를 측정합니다.
