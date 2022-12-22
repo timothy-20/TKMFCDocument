@@ -16,19 +16,13 @@ int result1(0);
 ::Func1(result1) = 10;
 
 int result2(0);
-*(Func2(&result2)) = 10;
+*(::Func2(&result2)) = 10;
 ```
 실제로 컴파일러 내에서는 레퍼런스가 포인터로 해석된다고 합니다. 그런 의미에서 레퍼런스와 포인터의 차이는 null 값의 유무라고 볼 수 있겠습니다.
 c++에서 레퍼런스를 더 선호하는 이유는 null pointer 접근으로 인한 위험이 없다는 부분에 있습니다.
 
-[2] 복사 생성자, 복사 할당 생성자
+[2] 복사 생략과 반환 값 최적화
 ===
-
-[3] 이동 생성자, 이동 할당 생성자
-===
-
-[3.1] 복사 생략과 반환 값 최적화
----
 > 참고한 글:
 > - https://modoocode.com/227#page-heading-0
 > - https://ansohxxn.github.io/cpp/chapter9-10/
@@ -81,8 +75,8 @@ TKCopying c = ::GetCopying();
 하지만 이는 틀렸습니다. 컴파일러는 이 역시 생성자만 호출하고, 생성된 객체의 주소를 lvalue인 'c'에 넘김으로써
 최적화를 수행합니다.
 
-[3.2] 이동 연산자
----
+[3] 이동 연산자
+===
 > 참고한 글:
 > - https://en.cppreference.com/w/cpp/language/move_constructor
 
@@ -176,8 +170,8 @@ TKCopying copy5 = TKCopying(copy1 + copy2);
 ```
 > 테스트 코드입니다.
 
-[3.3] 보편적인 참조 및 완전한 전달
----
+[4] 보편적인 참조 및 완전한 전달
+===
 > 참고한 글:
 > - https://modoocode.com/228#page-heading-6
 > - https://hwan-shell.tistory.com/132
