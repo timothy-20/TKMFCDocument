@@ -144,7 +144,51 @@ func1(10);
 <img src="public/result-screenshot/22_12_22_/screenshot-221222-02.png"><br>
 결과 화면입니다.
 
-[1.6] 고차함수 구현 연습
+```c++
+std::function<int(int)> factial;
+
+factial = [&factial](int value) -> int
+{
+    if (value == 0)
+        return 1;
+
+    return value * factial(value - 1);
+};
+
+std::cout << "result: " << factial(4) << std::endl;
+```
+<- 무척 전통적인 재귀 구문이다. 실질적으로 구현하고 싶은 내용으로 응용해볼 것.
+
+[2] 클로져 응용하기
+===
+[2.1] 클로져와 템플릿
+---
+```c++
+template<typename T> 
+using TKTemplateCallback = void(*)(T);
+
+template<typename T>
+TKTemplateCallback<T> g_checkType1 = [](T value) -> void
+{
+	std::cout << "[1] Type name: " << typeid(decltype(value)).name() << std::endl;
+	std::cout << "[1] Value: " << value << std::endl;
+};
+
+template<typename T>
+std::function<void(T)> g_checkType2 = [](T value) -> void 
+{ 
+	std::cout << "[2] Type name: " << typeid(decltype(value)).name() << std::endl; 
+	std::cout << "[2] Value: " << value << std::endl;
+
+};
+
+// entry point
+::g_checkType1<int>(10);
+::g_checkType2<int>(20);
+```
+함수 포인터로도 응용해 보았습니다
+
+[2.2] 고차함수 구현 연습
 ---
 > 참고한 글:
 > - https://velog.io/@un1945/Swift-%EA%B3%A0%EC%B0%A8%ED%95%A8%EC%88%98-Higher-order-Function
