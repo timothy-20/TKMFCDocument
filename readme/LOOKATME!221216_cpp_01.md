@@ -13,7 +13,9 @@
 이제는 c++뿐만 아니라 많은 언어에서도 generic이란 형태로 차용하고 있는 개념이지만, c++만큼 활용도가 높은 언어는 많지 않을 것입니다. 
 
 
-[1.2] type이 다른 template 검사
+[2] template 응용
+===
+[2.1] type이 다른 template 검사
 ---
 > 참고한 글:
 > - https://stackoverflow.com/questions/17390605/doing-a-static-assert-that-a-template-type-is-another-template

@@ -23,7 +23,7 @@ lambda(); // ?
 클로져의 캡쳐 값에 대해 공부하면서 무척 인상깊은 부분이었습니다. 이는 캡쳐 값은 **선언된 시점에서 결정**된다는 사실입니다.
 
 <img src="public/result-screenshot/22_12_22_/screenshot-221222-01.png"><br>
-이후 캡쳐 값이 원본이 변경된 것과 무관하게, 클로져 내에서는 선언된 시점에서의 값이 '10'이 그대로 출력됩니다.
+이후 캡쳐 값이 원본이 변경된 것과 무관하게, 클로져 내에서는 선언된 시점에서의 값이 '10'이 그대로 출력됩니다.<br><br>
 
 ```c++
 auto lambda([&a] { std::cout << "Captured value: " << a << std::endl; } );
@@ -47,7 +47,61 @@ std::cout << makeDouble() << std::endl; // 20
 기본적으로 클로져의 캡쳐 값(=)은 const로 선언됩니다. 그렇기에 값으로써는 복사되었지만, 변경은 불가능하기에 해당 변수를 직접 활용하기 어렵습니다.
 이때 **mutable 키워드**를 이용하여 캡쳐 값을 변경 가능하도록 지정합니다.
 
-[1.3] 암시적 this 포인터 캡쳐
+[1.3] 하나의 외부 변수의 값 및 참조 형태의 모두 지원하는 캡쳐
+---
+```c++
+int n(10);
+auto func0([](int n1, int n2, int n3, int n4, const int& n5) -> void
+    {
+        std::cout << n1 << std::endl;
+        std::cout << n2 << std::endl;
+        std::cout << n3 << std::endl;
+        std::cout << n4 << std::endl;
+        std::cout << n5 << std::endl;
+        return;
+    }
+);
+auto func1([func0, n, &nRef = n](int n1, int n2, int n3) -> void
+    {
+        func0(n1, n2, n3, n, nRef);
+        return;
+    }
+);
+
+n = 20;
+
+func1(1, 2, 3);
+```
+핵심은 'func1'의 **&nRef = n** 부분입니다.<br><br>
+```c++
+auto pNumber(std::make_unique<std::vector<int>>());
+
+pNumber->push_back(1);
+pNumber->push_back(2);
+pNumber->push_back(3);
+pNumber->push_back(4);
+
+auto func1([p = std::move(pNumber)]() -> void
+    {
+        auto container(*p);
+
+        for (auto element : container)
+            std::cout << "element: " << element << std::endl;
+
+        return;
+    }
+);
+
+std::cout << "number: " << pNumber << std::endl;
+
+func1();
+
+std::cout << "number: " << pNumber << std::endl;
+```
+<img src="public/result-screenshot/22_12_22_/screenshot-221222-03.png"><br>
+비슷하게 이동 연산을 통해 외부 값을 캡쳐할 수 있습니다. 이동된 std::unique_ptr 객체는 클로져의 소멸 주기에 맞춰 안전하게 할당해제 될 것입니다.
+
+[1.4] 암시적 this 포인터 캡쳐
 ---
 ```c++
 class TKGorp
@@ -91,7 +145,7 @@ gorp.Put(3).Put(10).Put(23).Put(23).Put(57).Put(79); // 1 + 2 + 2 + 0 + 1
 std::cout << "result: " << gorp.GetExtraValues() << std::endl; // 6
 ```
 나눌 값을 'gorp' 객체를 초기화 해주고, 객체 내부의 'm_numberList'에 임의의 숫자를 넣어줍니다. 'GetExtraValue'의 호출을 통해 list의 모든 요소들의 나머지 값을 
-더한 결과를 반환합니다.
+더한 결과를 반환합니다.<br><br>
 
 ```c++
 std::for_each(this->m_numberList.cbegin(), this->m_numberList.cend(), [=, &count](int value) -> void
@@ -100,18 +154,18 @@ std::for_each(this->m_numberList.cbegin(), this->m_numberList.cend(), [=, &count
     }
 );
 ```
-여기서 우리가 주목할 부분은 <b>[=]</b>([this])를 이용한 this 포인터 값의 캡쳐입니다. 이로 인해 우리는 클로져 안에서도 멤버에 접근할 수 있게됩니다.
+여기서 우리가 주목할 부분은 <b>[=]</b>([this])를 이용한 this 포인터 값의 캡쳐입니다. 이로 인해 우리는 클로져 안에서도 멤버에 접근할 수 있게됩니다.<br><br>
 
 ```c++
 [this] { this->m_value = 10; } // no mutable keyword
 ```
 한 가지 기억할 것은 mutable 키워드를 사용하지 않은 클로져라도 우리가 캡쳐한 값은 this의 포인터이기 때문에, 내부의 멤버 변수는 변경이 가능합니다. 
 
-[1.4] 클로져의 특수 멤버 함수
+[1.5] 클로져의 특수 멤버 함수
 ---
 클로져도 자신의 캡쳐 값에 대한 생성, 복사, 이동, 소멸을 수행할 특수 멤버 함수를 가지고 있습니다.
 
-[1.5] 재귀적 클로져
+[1.6] 재귀적 클로져
 ---
 ```c++
 std::function<int(int)> func1;
@@ -139,10 +193,8 @@ func1 = [&func2](int value) -> int
 
 func1(10);
 ```
-결과가 예상과는 달랐습니다. 왜 이러한 결과가 나오는지 무척 의문입니다. <- 질문을 통해 답을 도출해 볼 것.
-
 <img src="public/result-screenshot/22_12_22_/screenshot-221222-02.png"><br>
-결과 화면입니다.
+결과 화면입니다.<br><br>
 
 ```c++
 std::function<int(int)> factial;
@@ -158,6 +210,16 @@ factial = [&factial](int value) -> int
 std::cout << "result: " << factial(4) << std::endl;
 ```
 <- 무척 전통적인 재귀 구문이다. 실질적으로 구현하고 싶은 내용으로 응용해볼 것.
+
+[1.7] 람다식 생략
+---
+```c++
+// std::function<int(int)> 타입 생략
+// -> int 반환 타입 생략
+auto func1([] (int value) { return value += 1; });
+
+std::cout << "result: " << func1(10) << std::endl; // 11
+```
 
 [2] 클로져 응용하기
 ===
@@ -186,7 +248,7 @@ std::function<void(T)> g_checkType2 = [](T value) -> void
 ::g_checkType1<int>(10);
 ::g_checkType2<int>(20);
 ```
-함수 포인터로도 응용해 보았습니다
+함수 포인터로도 응용해 보았습니다.
 
 [2.2] 고차함수
 ---
@@ -250,3 +312,16 @@ std::cout << "Duration time: " << durationTime().count() << std::endl;
 ```
 time end point를 실행시키고 start point와의 차액을 통한 time duration을 반환하는 클로져를 반환하는 함수입니다.
 'GetDurationTime' 함수의 호출과 반환된 클로져의 호출 사이에 특정 동작을 수행하는 코드를 삽입하여 수행 속도를 측정합니다.
+
+[2.4] 클로져를 인자로 받는 고차함수
+> 참고한 글: https://learn.microsoft.com/ko-kr/cpp/cpp/examples-of-lambda-expressions?view=msvc-170#higherOrderLambdaExpressions
+---
+```c++
+auto add([](int x = 0) -> std::function<int(int)> { return [x](int y) -> int { return x + y; }; }); // 초기 인자가 있는 클로져
+auto mul([](std::function<int(int)> func1, int n) -> int { return func1(n) * n; }); 
+
+std::cout << "result: " << add(1)(2) << std::endl;
+std::cout << "result: " << mul(add(), 3) << std::endl;
+```
+해당 소스를 구현하면서 새롭게 시도해 본 것은 클로져의 인자에도 초기값을 설정할 수 있다는 사실이었다.
+
