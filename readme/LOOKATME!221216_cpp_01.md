@@ -8,10 +8,65 @@
 [1] template
 ===
 > 참고한 글:
-> - [template 개념 및 예제](https://modoocode.com/219)
+> - https://modoocode.com/219
+> - https://learn.microsoft.com/en-us/cpp/cpp/templates-cpp?view=msvc-170#template_parameters
 
 이제는 c++뿐만 아니라 많은 언어에서도 generic이란 형태로 차용하고 있는 개념이지만, c++만큼 활용도가 높은 언어는 많지 않을 것입니다. 
 
+[1.1] 매개변수 템플릿 및 기본 템플릿 인수
+---
+```c++
+template<typename T, size_t SIZE>
+class TKArray
+{
+public:
+    std::vector<T> value = std::vector<T>(SIZE);
+};
+
+template<typename T, template<typename = T, size_t = 0> class Arr = TKArray>
+class TKClass2
+{
+public:
+    T value;
+    Arr<> list;
+};
+
+// entry point
+TKClass2<int> class1;
+auto list(class1.list.value);
+
+list.push_back(10);
+list.push_back(20);
+list.push_back(30);
+
+for (auto element : list)
+    std::cout << "value:" << element << std::endl;
+```
+해당 문법을 전부 활용해 본 예제입니다. 하나씩 뜯어보겠습니다.
+
+TKClass2의 2번째 템플릿 인자인 
+
+```c++
+template<typename, size_t> class Arr
+```
+'Arr'는 템플릿 내부에서 템플릿 인자를 가지는 클래스 타입을 의미합니다. 템플릿 인자로써 사용되는
+템플릿의 인자들은 이름을 가지지 않을 수 있습니다(명시해 둘 수는 있으나, 'Arr' 템플릿 매개 변수에는 본문이 없으므로
+사용할 곳이 없습니다). 'Arr' 템플릿 인자는 타입 및 값 인자를 가집니다.
+
+```c++
+Arr<int, 10> m_list;
+```
+위와같이 TKClass2의 멤버로써 사용할 수 있습니다. 
+
+```c++
+
+```
+
+[1.2] 템플릿 특수화
+---
+```c++
+
+```
 
 [2] template 응용
 ===
