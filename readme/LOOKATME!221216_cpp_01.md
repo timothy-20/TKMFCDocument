@@ -59,8 +59,21 @@ Arr<int, 10> m_list;
 위와같이 TKClass2의 멤버로써 사용할 수 있습니다. 
 
 ```c++
-
+template<typename T, template<typename = T, size_t = 0> class Arr = TKArray>
 ```
+템플릿은 클래스의 멤버 함수 인자처럼 기본 인자를 가질 수 있습니다. 만일 템플릿의 인자의 아무 타입 혹은 값을
+지정하지 않았다면 기본 인자로 대체됩니다. 위 코드에서는 **템플릿 인자의 기본 인자**를 보여주고 있습니다.
+
+```c++
+template<typename T = int, template<typename = T, size_t = 0> class Arr = TKArray>
+class TKClass2
+{ ... };
+        
+// entry point
+TKClass2<> classA; // TKClass2<int, TKArray<int, 0>> classA; 로 연역됩니다.
+```
+만일 모든 템플릿의 인자가 기본 인자로 대체될 인스턴스를 생성할 경우, 타입 이후에 빈 괄호를 통해 
+템플릿 타입임을 명시해 주어야 합니다.
 
 [1.2] 템플릿 특수화
 ---
