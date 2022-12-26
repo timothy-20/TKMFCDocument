@@ -323,5 +323,5 @@ auto mul([](std::function<int(int)> func1, int n) -> int { return func1(n) * n; 
 std::cout << "result: " << add(1)(2) << std::endl;
 std::cout << "result: " << mul(add(), 3) << std::endl;
 ```
-해당 소스를 구현하면서 새롭게 시도해 본 것은 클로져의 인자에도 초기값을 설정할 수 있다는 사실이었다.
+해당 소스를 구현하면서 새롭게 시도해 본 것은 클로져의 인자에도 초기값을 설정할 수 있다는 사실이었습니다.
 
