@@ -208,7 +208,7 @@ struct IsInstantiationOfDummy<TKDummyTemplate<Ts...>> : public std::true_type {}
 template<typename T>
 struct TKTemplateChecker
 {
-	static_assert(IsInstantiationOfDummy<T>::value, "Fail template type!");
+	static_assert(IsInstantiationOfDummy<T>::value, "Invalid type format.");
 };
 
 template<typename T> using TKDummyTemplateAlt = TKDummyTemplate<T>;
@@ -217,4 +217,50 @@ template<typename T> using TKDummyTemplateAlt = TKDummyTemplate<T>;
 TKTemplateChecker<TKDummyTemplate<int>> template1;
 TKTemplateChecker<TKDummyTemplateAlt<int>> templateAlt1;
 ```
-template 항목 정리 이후 마저 작성할 것.
+위 예제는 템플릿 특수화를 이용하여 템플릿 인자를 통해 받은 타입이 'TKDummyTemplate<T>'인지 체크하는 구조체를 보여주고
+있습니다. 원래는 'static_assert'를 이용해 컴파일 타임에 타입 에러를 발생시키는 구현이 핵심이지만, 템플릿 특수화에 
+있어서도 좋은 예제라 생각되어 실습해 보았습니다.
+
+```c++
+template <class T>
+struct PTS
+{
+    enum
+    {
+        IsPointer = 0,
+        IsPointerToDataMember = 0
+    };
+};
+
+template <class T>
+struct PTS<T*>
+{
+    enum
+    {
+        IsPointer = 1,
+        IsPointerToDataMember = 0
+    };
+};
+
+template <class T, class U>
+struct PTS<T U::*> 
+{
+    enum
+    {
+        IsPointer = 0,
+        IsPointerToDataMember = 1
+    };
+};
+
+// entry point
+TKTemplate2<int> temp1;
+TKTemplate2<TKTemplate1<int>> temp2;
+
+if (static_cast<bool>(::PTS<TKStorage*>::IsPointer))
+    std::cout << "S is pointer\n";
+
+if (static_cast<bool>(::PTS<int TKStorage::*>::IsPointerToDataMember))
+    std::cout << "S is pointer to data member\n";
+```
+템플릿 특수화를 이용하여 일반 타입, 포인터 타입, 멤버 포인터 타입을 식별하는 구조체를 구현한 예제입니다. 앞선 예제보다는
+좀 더 템플릿 특수화를 위한 구현입니다.
