@@ -4,7 +4,7 @@
 > **author**: timothy-20 <br>
 > **subject**: c++ 문법을 익히던 도중 시도해 본 내용에 대하여.<br>
 > **project name**: TKMFCApplication221201
-> 
+
 [1] template
 ===
 > 참고한 글:
@@ -78,8 +78,114 @@ TKClass2<> classA; // TKClass2<int, TKArray<int, 0>> classA; 로 연역됩니다
 [1.2] 템플릿 특수화
 ---
 ```c++
+template <typename KEY, typename VALUE> 
+class TKDictionary
+{
+protected:
+    KEY* m_keys;
+    VALUE* m_values;
+    int m_size;
+    int m_maxSize;
 
+public:
+    TKDictionary(int size) : 
+        m_size(0),
+        m_maxSize(1)
+    {
+        while (size >= this->m_maxSize)
+            this->m_maxSize *= 2;
+    
+        this->m_keys = new KEY[this->m_maxSize];
+        this->m_values = new VALUE[this->m_maxSize];
+    }
+    
+    virtual ~TKDictionary()
+    {
+        delete[] this->m_keys;
+        delete[] this->m_values;
+    }
+    
+    // utils
+    virtual void Add(KEY key, VALUE value)
+    {
+        KEY* keyTemp(nullptr);
+        VALUE* valueTemp(nullptr);
+    
+        if (this->m_size + 1 > this->m_maxSize)
+        {
+            this->m_maxSize *= 2;
+            keyTemp = new KEY[this->m_maxSize];
+            valueTemp = new VALUE[this->m_maxSize];
+    
+            for (int i(0); i < this->m_size; i++)
+            {
+                keyTemp[i] = this->m_keys[i];
+                valueTemp[i] = this->m_values[i];
+            }
+    
+            keyTemp[this->m_size] = key;
+            valueTemp[this->m_size] = value;
+            delete[] this->m_keys;
+            delete[] this->m_values;
+            this->m_keys = keyTemp;
+            this->m_values = valueTemp;
+        }
+        else
+        {
+            this->m_keys[this->m_size] = key;
+            this->m_values[this->m_size] = value;
+        }
+    
+        this->m_size++;
+    }
+    
+    virtual void Print() const
+    {
+        for (int i(0); i < this->m_size; i++)
+            std::cout << "{ " << this->m_keys[i] << ", " << this->m_values[i] << " }" << std::endl;
+    }
+};
+
+template <typename VALUE>
+class TKNumericDictionary : public TKDictionary<int, VALUE>
+{
+public:
+    TKNumericDictionary(int size) : TKNumericDictionary::TKDictionary(size)
+    {}
+    
+    void BubbleSort()
+    {
+        int smallest(0);
+    
+        for (int i(0); i < this->m_size - 1; i++)
+        {
+            for (int j(i); j < this->m_size; j++)
+            {
+                if (this->m_keys[j] < this->m_keys[smallest])
+                    smallest = j;
+            }
+    
+            std::swap(this->m_keys[i], this->m_keys[smallest]);
+            std::swap(this->m_values[i], this->m_values[smallest]);
+        }
+    }
+};
+
+// entry point
+TKNumericDictionary<const char*> dictionary(5);
+
+dictionary.Add(43, "peco");
+dictionary.Add(26, "timothy");
+dictionary.Add(74, "lay");
+dictionary.BubbleSort();
+dictionary.Print();
 ```
+위 소스코드는 msdn의 예제를 따라한 key-value dictionary class 입니다. 그리고 템플릿 특수화를 통해 key값은 integer형의 
+id 값을 받는 'TKNumericDictionary'를 구현해 보았습니다. 기존 예제와 차별을 둔 부분은 상속을 통해 불필요한 코드의 중복을
+줄인 부분에 있습니다.
+
+<img src="public/result-screenshot/22_12_27_/screenshot-221227-01.png"><br>
+> 결과 화면입니다.
 
 [2] template 응용
 ===
